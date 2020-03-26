@@ -30,13 +30,13 @@ SNP calling identifies variable sites in the genome and can be carried out with 
 #### Annotation:
 Prokka will be used for annotation. It is a software tool for the fast structural and functional annotation of prokaryotic genomes.
 
-#### Synteny Comparison
+#### Synteny Comparison:
 ....
 
 #### Mapping:
 BWA will be used to align paired-end RNA-seq as well as single-end Tn-seq reads to the assembled genome. 
 
-#### Differential Expression Analysis
+#### Differential Expression Analysis:
 Counting the mapped RNA reads for differential expression analysis will be carried out with Htseq, a Python package developed for exactly this purpose. This is a step that can take up to seven hours for the paired-end reads which will have to be considered. 
 
 ### Timeframe
