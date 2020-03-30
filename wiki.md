@@ -13,10 +13,10 @@ The data that is available to try and answer these questions is for one sequenci
 The steps and analyses required for carrying out this project successfully will be described below in roughly the order they will be performed.
 
 #### Quality Control:
-Before starting the project it is important to make sure the quality of the sequencing data is sufficient to go through with the analysis and figure out where problems might come up at later stages. This will be done before and after preprocessing, with FastQC which is a quick and simple software for quality control and will provide an overview of the data. 
+Before starting the project it is important to make sure the quality of the sequencing data is sufficient to go through with the analysis and figure out where problems might come up at later stages. With Illumina data his will be done before and after preprocessing, with FastQC which is a quick and simple software for quality control and will provide an overview of the data. PacBio reads will later be assembled with Canu which also includes a quality control step.
 
 #### Preprocessing:
-The data I will be working with is already trimmed but might need some more preprocessing. In this case this will be done with Trimmomatic which can be used to trim sequencing data and remove adapters. 
+The data I will be working with is already trimmed but might need some more preprocessing. In this case this will be done with Trimmomatic for Illumina sequences which can be used to trim sequencing data and remove adapters. PacBio sequences will be trimmed with Canu during assembly. 
 
 #### Genome Assembly:
 In a first step PacBio sequencing data will be assembled using Canu which was developed specifically for the assembly of long reads. The paper reports that this assembly lead to a gap in the assembled genome that could not be closed which is why Illumina and MinION reads will be assembled with Spades in a second step. Spades can deal with various different types of reads at the same time which is why it is a good fit here. Genome assembly is a very time-consuming step. Both steps can take multiple hours which is why careful planning and execution of these will be crucial in this project. 
@@ -31,7 +31,7 @@ SNP calling identifies variable sites in the genome and can be carried out with 
 Prokka will be used for annotation. It is a software tool for the fast structural and functional annotation of prokaryotic genomes.
 
 #### Synteny Comparison:
-....
+ACT will be used for visualiuation and synteny comparison with a closely related genome. 
 
 #### Mapping:
 BWA will be used to align paired-end RNA-seq as well as single-end Tn-seq reads to the assembled genome. 
