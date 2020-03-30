@@ -1,7 +1,9 @@
 # Daily Log - Genome Analysis Project
 
-30.03.2020  Set up working directory structure
+30.03.2020  
 
-            Gather data
+Set up working directory structure
 
-            Quality control of Illumina reads with FastQC
+Gather data
+
+Quality control of Illumina reads with FastQC
