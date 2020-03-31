@@ -1,3 +1,7 @@
+#Gathering the data in the working directory by creating soft links
+
+#Genomic data
+
 ln -s /proj/g2020008/nobackup/private/1_Zhang_2017/genomics_data/PacBio/m131023_233432_42174_c100519312550000001823081209281335_s1_X0.1.subreads.fastq.gz ../data/raw_data/genomic_data/PacBio
 ln -s /proj/g2020008/nobackup/private/1_Zhang_2017/genomics_data/PacBio/m131023_233432_42174_c100519312550000001823081209281335_s1_X0.2.subreads.fastq.gz ../data/raw_data/genomic_data/PacBio
 ln -s /proj/g2020008/nobackup/private/1_Zhang_2017/genomics_data/PacBio/m131023_233432_42174_c100519312550000001823081209281335_s1_X0.3.subreads.fastq.gz ../data/raw_data/genomic_data/PacBio
