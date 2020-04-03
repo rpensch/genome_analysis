@@ -16,8 +16,6 @@ module load spades
 spades.py --isolate \
 -1 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz \
 -2 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz \
---nanopore data/genomic_data/raw_data/Nanopore/E745_all.fasta.gz \
--k -o analyses/2_genome_assembly
+--nanopore ../data/genomic_data/raw_data/Nanopore/E745_all.fasta.gz \
+-k 55 -o analyses/2_genome_assembly
 
-#question: should I use --plasmid when there is 1 chromosome as well? 
-#question: what kmer size should I choose?
