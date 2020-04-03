@@ -4,4 +4,4 @@
 
 31.03.2020 Genome Assembly of PacBio sequences with Canu 
 
-03.04.2020 Gather transcriptomics data and genome assembly of Illumina and Nanopore data with spades
+03.04.2020 Gather transcriptomics data, genome assembly of Illumina and Nanopore data with spades and assembly evaluation with Quast
