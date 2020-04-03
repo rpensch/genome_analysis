@@ -18,7 +18,7 @@ analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta #rename c
 mv analyses/2_genome_assembly/2_efaecium_spades/contigs.fasta \
 analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta #rename spades assembly file
 
-quast.py analyses/2_genome_assembly/1_efaecium_pacbio/efaecium_pacbio.contigs.fasta \
+quast.py analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
 analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta \
 -o analyses/3_assembly_evaluation/quast \
 --gene-finding
