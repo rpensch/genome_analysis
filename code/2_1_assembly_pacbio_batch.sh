@@ -13,7 +13,7 @@ module load canu
 
 # Your commands
 canu \
- -p efaecium -d efaecium_pacbio \
+ -p efaecium -d efaecium_canu \
  genomeSize=3.2m \
  -pacbio-raw data/genomic_data/raw_data/PacBio/m131023_233432_42174_c100519312550000001823081209281335_s1_X0.1.subreads.fastq.gz \
  -pacbio-raw data/genomic_data/raw_data/PacBio/m131023_233432_42174_c100519312550000001823081209281335_s1_X0.1.subreads.fastq.gz \

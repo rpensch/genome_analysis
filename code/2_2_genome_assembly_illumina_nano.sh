@@ -13,9 +13,9 @@ module load spades
 
 # Your commands
 
-spades.py --isolate \
+spades.py \
 -1 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz \
 -2 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz \
 --nanopore data/genomic_data/raw_data/Nanopore/E745_all.fasta.gz \
--k 55 -o analyses/2_genome_assembly
+-k 55 -o analyses/2_genome_assembly/2_efaecium_spades
 
