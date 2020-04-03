@@ -19,5 +19,5 @@ spades.py --isolate \
 --nanopore data/genomic_data/raw_data/Nanopore/E745_all.fasta.gz \
 -k -o analyses/2_genome_assembly
 
-#questions: should I use --plasmid when there is 1 chromosome as well? 
+#question: should I use --plasmid when there is 1 chromosome as well? 
 #question: what kmer size should I choose?
