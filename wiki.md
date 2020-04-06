@@ -50,9 +50,9 @@ Zhang, X., de Maat, V., Guzmán Prieto, A.M., Prajsnar, T.K., Bayjanov, J.R., de
 
 ## Analyses
 
-### Quality Control  of Illumina data with FastQC
+### Quality Control
 
-Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. For both Illumina files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. 
+Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. For both Illumina files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further.
 
 ### Genome Assembly
 
