@@ -48,4 +48,16 @@ Organizing the working director properly will be important to keep track of the 
 ### References
 Zhang, X., de Maat, V., Guzmán Prieto, A.M., Prajsnar, T.K., Bayjanov, J.R., de Been, M., Rogers, M.R.C., Bonten, M.J.M., Mesnage, S., Willems, R.J.L. & van Schaik, W. 2017, "RNA-seq and Tn-seq reveal fitness determinants of vancomycin-resistant Enterococcus faecium during growth in human serum", BMC Genomics, vol. 18, no. 1, pp. 893-12.
 
+## Analyses
+
+### Quality Control  of Illumina data with FastQC
+
+Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. For both Illumina files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. 
+
+### Genome Assembly
+
+The first step in the assembly of the *E. faecium* genome was an assembly of PacBio sequence data with Canu. Canu is specifically designed for the assembly of long PacBio or Nanopore reads and includes a correction and trimming step. This means seperate preprocessing of the PacBio data is not necessary. The genome size of *E. faecium* which needs to be included in the command for this step is derived from appendix 1 and amounts to 3.2 Mbp.
+
+Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. 
+
 
