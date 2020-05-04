@@ -15,9 +15,9 @@ module load samtools
 # Your commands
 bwa index analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta
 
-#bwa mem analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
-#data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR1797972_pass_1.fastq.gz \
-#data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR1797972_pass_2.fastq.gz | samtools view -b | samtools sort -o analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797972.bam
+bwa mem analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
+data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR1797972_pass_1.fastq.gz \
+data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR1797972_pass_2.fastq.gz | samtools view -b | samtools sort -o analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797972.bam
 
 bwa mem analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
 data/transcriptomics_data/RNA-Seq_BH/trim_paired_ERR1797974_pass_1.fastq.gz \
