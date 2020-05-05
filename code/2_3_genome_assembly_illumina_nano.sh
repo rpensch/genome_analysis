@@ -3,7 +3,7 @@
 #SBATCH -p core 
 #SBATCH -n 2 
 #SBATCH -t 03:00:00 
-#SBATCH -J spades_assembly_1 
+#SBATCH -J spades_assembly_2 
 #SBATCH --mail-type=ALL 
 #SBATCH --mail-user rar.pensch@gmail.com  
  
@@ -17,6 +17,4 @@ spades.py \
 -1 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz \
 -2 data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz \
 --nanopore data/genomic_data/raw_data/Nanopore/E745_all.fasta.gz \
--k 55 -o analyses/2_genome_assembly/2_efaecium_spades
-
-#try with 77? is closer to 80 % read length
+-k 77 -o analyses/2_genome_assembly/3_efaecium_spades
