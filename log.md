@@ -9,3 +9,5 @@
 06.04.2020 Assembly evaluation with MUMmerplot
 
 09.04.2020 Annotation of canu assembly using Prokka
+
+27.04.2020 Synteny comparison with a closely related genome

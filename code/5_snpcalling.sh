@@ -1,25 +1,27 @@
+#!/bin/bash -l   
+#SBATCH -A g2020008 
+#SBATCH -p core 
+#SBATCH -n 2 
+#SBATCH -t 04:00:00 
+#SBATCH -J snp_calling
+#SBATCH --mail-type=ALL 
+#SBATCH --mail-user rar.pensch@gmail.com  
+
+# Load modules 
+
 module load bioinfo-tools
-module load bcftools
+module load samtools
 module load python/2.7.15
-module load bwa
+module load bcftools
 
+# Your commands
 
-bwa index reference_genome -p efaecalis_index -a is
-bwa aln reference_genome reads > my.sai
-bwa samse reference_genome my.sai reads > my.sam
+samtools faidx analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta
 
-#https://www.ebi.ac.uk/sites/ebi.ac.uk/files/content.ebi.ac.uk/materials/2014/140217_AgriOmics/dan_bolser_snp_calling.pdf
-
-bwa index ref.fa
-
-bwa mem ref.fa reads.fq > aln-se.sam
-
-bwa mem ref.fa read1.fq read2.fq > aln-pe.sam
-
-bwa aln ref.fa short_read.fq > aln_sa.sai
-
-bwa samse ref.fa aln_sa.sai short_read.fq > aln-se.sam
-
-bwa sampe ref.fa aln_sa1.sai aln_sa2.sai read1.fq read2.fq > aln-pe.sam
-
-bwa bwasw ref.fa long_read.fq > aln.sam 
+samtools mpileup -g -f analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
+analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797972.bam \
+analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797973.bam \
+analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797974.bam \
+analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797969.bam \
+analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797970.bam \
+analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797971.bam | bcftools view -bvcg | vcfutils.pl varFilter - > snp_calling.vcf
