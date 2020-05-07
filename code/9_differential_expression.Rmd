@@ -1,0 +1,78 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+With: https://informatics.fas.harvard.edu/differential-expression-with-deseq2.html
+
+Set the working directory
+
+```{r include=FALSE}
+setwd("C:/Users/Raphaela/UU/GA/genome_analysis/results/htseq_readcount")
+```
+
+Install DESeq2
+
+```{r message=FALSE, warning=TRUE, include=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("DESeq2")
+
+library("DESeq2")
+```
+
+Read in the RNA count files of the different samples and conditions and create a data frame:
+
+```{r}
+bh1 <- read.table("htseq_readcount_BH_paired_ERR1797972.txt", row.names = 1, col.names = c('gene', 'ERR1797972'))
+
+bh2 <- read.table("htseq_readcount_BH_paired_ERR1797973.txt", row.names = 1, col.names = c('gene', 'ERR1797973'))
+
+bh3 <- read.table("htseq_readcount_BH_paired_ERR1797974.txt", row.names = 1, col.names = c('gene', 'ERR1797974'))
+
+serum1 <- read.table("htseq_readcount_Serum_paired_ERR1797969.txt", row.names = 1, col.names = c('gene', 'ERR1797969'))
+
+serum2 <- read.table("htseq_readcount_Serum_paired_ERR1797970.txt", row.names = 1, col.names = c('gene', 'ERR1797970'))
+serum3 <- read.table("htseq_readcount_Serum_paired_ERR1797971.txt", row.names = 1, col.names = c('gene', 'ERR1797971'))
+
+countData <- data.frame(bh1, bh2, bh3, serum1, serum2, serum3)
+```
+
+Create a data frame assigning the samples to the correct conditions:
+
+```{r}
+sampleNames <- c('ERR1797972', 'ERR1797973', 'ERR1797974', 'ERR1797969', 'ERR1797970', 'ERR1797971')
+condition <- c('BH', 'BH', 'BH', 'Serum', 'Serum', 'Serum')
+
+colData <- data.frame(row.names=colnames(countData), condition=factor(condition, levels=c('BH','Serum')))
+```
+
+Create a DESeq2 data set and run the DESeq2 algorithm on it:
+
+```{r warning=TRUE, include=FALSE}
+dataset <- DESeqDataSetFromMatrix(countData = countData,
+                                  colData = colData,
+                                  design = ~condition)
+dds <- DESeq(dataset)
+
+result <- results(dds, contrast=c('condition','Serum','BH'))
+result <- result[complete.cases(result),]  #remove any rows with NA
+```
+
+```{r}
+summary(result)
+```
+
+```{r}
+n = 20
+resOrdered <- result[order(result$padj),]
+topResults <- rbind( resOrdered[ resOrdered[,'log2FoldChange'] > 0, ][1:n,], 
+                    resOrdered[ resOrdered[,'log2FoldChange'] < 0, ][n:1,] )
+topResults[c(1:5,(2*n-4):(2*n)), c('baseMean','log2FoldChange','padj')]
+```
+
+```{r}
+plotMA(result)
+```
+
