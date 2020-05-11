@@ -79,10 +79,14 @@ Illumina and Nanopore reads were then assembled together using Spades which spec
 #### Other Questions:
 
  - What is the difference between a ‘contig’ and a ‘unitig’?
- A contig is a consensus sequence made up of a continuous stretch of reads that overlap without any gaps while 
+
+A contig is a consensus sequence made up of a continuous stretch of reads that overlap without any gaps while 
 a unitig is a short assembly of DNA sequence with the limitation that the reads cannot contain contradictory overlaps. So in a way, unitigs are considered to be higher quality contigs. 
+
  - What is the difference between a ‘contig’ and a ‘scaffold’?
- A scaffold consists of several contigs separated by gaps that are put together using additional information about the relative position and orientation of the contigs in the genome. 
+
+A scaffold consists of several contigs separated by gaps that are put together using additional information about the relative position and orientation of the contigs in the genome. 
+
  - What are the k-mers? What k-mer(s) should you use? What are the problems and benefits of choosing a small kmer? And a big k-mer?
  - Some assemblers can include a read-correction step before doing the assembly. What is this step doing?
  - 
