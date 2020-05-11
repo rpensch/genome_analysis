@@ -63,8 +63,11 @@ FastQC did raise several warnings for all RNA sequencing data files on the other
 #### Other Questions:
 
  - What is the structure of a FASTQ file?
+
  A FASTQ file always starts with the sequence identifier which is preceded by the at sign (@). In the next line follows the actual sequence after which a plus sign (+) is inserted as a seperator. The fourth line then includes the base call quality scores. 
+ 
  - How is the quality of the data stored in the FASTQ files? How are paired reads identified?
+
 The quality scores are encoded with ASCII. This means that the numeric quality scores are stored in the FASTQ file as letters. For paired reads, there should normally be two files available (R1 and R2). 
 
 
