@@ -50,11 +50,23 @@ Zhang, X., de Maat, V., Guzmán Prieto, A.M., Prajsnar, T.K., Bayjanov, J.R., de
 
 ## Analyses
 
-### Quality Control
+### Reads Quality Control
 
-Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further.
+Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. 
 
-FastQC did raise several warnings for all RNA sequencing data files on the other hand. The categories sequence duplication levels and overrepresented sequences produced failures in almost all the files as well as per base sequence content and per base GC content. Sequence length distributions and per tile sequence quality seemed to cause problems multiple times too. These warnings can mostly be explained simply by the nature of RNA sequencing data. It is, for example, expected that some transcripts occur more often than others which can lead to warnings for duplication levels and overrepresented sequences meaning that this does not actually pose a problem to the analysis. The length of RNA transcripts varies as well, so it is entirely normal that the sequence length distribution varies. Per base GC content and per base sequence content are prone to be biased by the overrepresented sequences in our data, so this is nothing to worry about either. Lastly, the FastQC manual suggests that warnings for per tile sequence quality can be ignored if they only seem to affect a very small number of tiles which is the case here. So, all in all the quality of the RNA sequencing data seems to be fine and no further preprocessing is to be conducted. 
+#### Results
+
+For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. There are no problems expected in further analses that correlate with the quality of the reads. 
+
+FastQC did raise several warnings for all RNA sequencing data files on the other hand. The categories sequence duplication levels and overrepresented sequences produced failures in almost all the files as well as per base sequence content and per base GC content. Sequence length distributions and per tile sequence quality seemed to cause problems multiple times too. These warnings can mostly be explained simply by the nature of RNA sequencing data. It is, for example, expected that some transcripts occur more often than others which can lead to warnings for duplication levels and overrepresented sequences meaning that this does not actually pose a problem to the analysis. The length of RNA transcripts varies as well, so it is entirely normal that the sequence length distribution varies. Per base GC content and per base sequence content are prone to be biased by the overrepresented sequences in our data, so this is nothing to worry about either. Lastly, the FastQC manual suggests that warnings for per tile sequence quality can be ignored if they only seem to affect a very small number of tiles which is the case here. So, all in all the quality of the RNA sequencing data seems to be fine and shoulf not cause problems further down the line which means that no further preprocessing is to be conducted. 
+
+#### Other Questions:
+
+ - What is the structure of a FASTQ file?
+ A FASTQ file always starts with the sequence identifier which is preceded by the at sign (@). In the next line follows the actual sequence after which a plus sign (+) is inserted as a seperator. The fourth line then includes the base call quality scores. 
+ - How is the quality of the data stored in the FASTQ files? How are paired reads identified?
+The quality scores are encoded with ASCII. This means that the numeric quality scores are stored in the FASTQ file as letters. For paired reads, there should normally be two files available (R1 and R2). 
+
 
 ### Genome Assembly
 
@@ -62,4 +74,15 @@ The first step in the assembly of the *E. faecium* genome was an assembly of Pac
 
 Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. 
 
+#### Results
 
+#### Other Questions:
+
+ - What is the difference between a ‘contig’ and a ‘unitig’?
+ A contig is a consensus sequence made up of a continuous stretch of reads that overlap without any gaps while 
+a unitig is a short assembly of DNA sequence with the limitation that the reads cannot contain contradictory overlaps. So in a way, unitigs are considered to be higher quality contigs. 
+ - What is the difference between a ‘contig’ and a ‘scaffold’?
+ A scaffold consists of several contigs separated by gaps that are put together using additional information about the relative position and orientation of the contigs in the genome. 
+ - What are the k-mers? What k-mer(s) should you use? What are the problems and benefits of choosing a small kmer? And a big k-mer?
+ - Some assemblers can include a read-correction step before doing the assembly. What is this step doing?
+ - 
