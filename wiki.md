@@ -103,7 +103,6 @@ The k-mer size greatly affects the structure of the De Bruijn graph. A small k-m
 
 Canu uses a hybrid error correction step prior to assembly. First, high-identity short-read sequences are mapped to all the long-read sequences. Then, repeats are resolved by placing each short-read sequence in its highest identity repeat copy. Lastly, chimera and trimming problems are resolved within the long-read sequences and a consensus sequence is generated for each long-read sequence based on a multiple alignment of the short-read sequences. 
 
- - 
 
 
 
