@@ -58,7 +58,7 @@ Quality control of Illumina raw sequence data was carried out with FastQC. This 
 
 For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. There are no problems expected in further analses that correlate with the quality of the reads. 
 
-FastQC did raise several warnings for all RNA sequencing data files on the other hand. The categories sequence duplication levels and overrepresented sequences produced failures in almost all the files as well as per base sequence content and per base GC content. Sequence length distributions and per tile sequence quality seemed to cause problems multiple times too. These warnings can mostly be explained simply by the nature of RNA sequencing data. It is, for example, expected that some transcripts occur more often than others which can lead to warnings for duplication levels and overrepresented sequences meaning that this does not actually pose a problem to the analysis. The length of RNA transcripts varies as well, so it is entirely normal that the sequence length distribution varies. Per base GC content and per base sequence content are prone to be biased by the overrepresented sequences in our data, so this is nothing to worry about either. Lastly, the FastQC manual suggests that warnings for per tile sequence quality can be ignored if they only seem to affect a very small number of tiles which is the case here. So, all in all the quality of the RNA sequencing data seems to be fine and shoulf not cause problems further down the line which means that no further preprocessing is to be conducted. 
+FastQC did raise several warnings for all RNA sequencing data files on the other hand. The categories sequence duplication levels and overrepresented sequences produced failures in almost all the files as well as per base sequence content and per base GC content. Sequence length distributions and per tile sequence quality seemed to cause problems multiple times too. These warnings can mostly be explained simply by the nature of RNA sequencing data. It is, for example, expected that some transcripts occur more often than others which can lead to warnings for duplication levels and overrepresented sequences meaning that this does not actually pose a problem to the analysis. The length of RNA transcripts varies as well, so it is entirely normal that the sequence length distribution varies. Per base GC content and per base sequence content are prone to be biased by the overrepresented sequences in our data, so this is nothing to worry about either. Lastly, the FastQC manual suggests that warnings for per tile sequence quality can be ignored if they only seem to affect a very small number of tiles which is the case here. So, all in all the quality of the RNA sequencing data seems to be fine and should not cause problems further down the line which means that no further preprocessing is to be conducted. 
 
 #### Other Questions:
 
@@ -91,5 +91,25 @@ a unitig is a short assembly of DNA sequence with the limitation that the reads 
 A scaffold consists of several contigs separated by gaps that are put together using additional information about the relative position and orientation of the contigs in the genome. 
 
  - What are the k-mers? What k-mer(s) should you use? What are the problems and benefits of choosing a small kmer? And a big k-mer?
+
+A k-mer is simply a sequence substring of defined length. For short-read assembly, k-mers can be used to correct errors in the assembly by counting the number of times each k-mer appears across the data set and replacing rare k-mers with common ones. More importantly, they are needed in order to build the De Bruijn graph. Choosing the best k-mer can be difficult. The size depends on the read length, sequencing depth and also on the genome size. It is generally recommended to go for k-mer sizes that are not larger than 80 % of the read lenght and the best results are generated when the algorithm tries multiple different sizes. The Velvetadvisor, for example, would estimate the k-mer size as follows:
+
+k-mer siz=e 1 + read length - (k-mer coverage * read length)/(genome coverage)
+where, genome coverage = (total number of reads * read length)/ (Estimated genome size)
+
+The k-mer size greatly affects the structure of the De Bruijn graph. A small k-mer size can lead to a very branched De Bruijn graph because repeats and duplications due to errors in reads that are longer than the k-mer size are not recognized and k-mers are wrongly connected which can make assembly difficult and lead to smaller contigs. A large k-mer size can recognize small repeats and therefore reduce the number of branches in the graph. On the other hand, longer k-mers can lead to a very sparse and fragmented graph which can hinder optimal assembly as well. 
+
  - Some assemblers can include a read-correction step before doing the assembly. What is this step doing?
+
+ Canu uses a hybrid error correction step prior to assembly. First, high-identity short-read sequences are mapped to all the long-read sequences. Then, repeats are resolved by placing each short-read sequence in its highest identity repeat copy. Lastly, chimera and trimming problems are resolved within the long-read sequences and a consensus sequence is generated for each long-read sequence based on a multiple alignment of the short-read sequences. 
  - 
+
+
+
+### References
+
+ - Deonier, R. C., Tavaré, S., & Waterman, M. S. (2005). Computational genome analysis: An introduction. New York: Springer. doi:10.1007/0-387-28807-4 
+ - Cha, S., & Bird, D. M. (2016). Optimizing k-mer size using a variant grid search to enhance de novo genome assembly. Bioinformation, 12(2), 36–40. https://doi.org/10.6026/97320630012036
+ - Mahadik, K., Wright, C., Kulkarni, M., Bagchi, S., & Chaterji, S. (2019). Scalable genome assembly through parallel de bruijn graph construction for multiple k-mers. London: Nature Publishing Group. doi:10.1038/s41598-019-51284-9
+ - Koren, S., Walenz, B. P., Berlin, K., Miller, J. R., Bergman, N. H., & Phillippy, A. M. (2017). Canu: Scalable and accurate long-read assembly via adaptive k -mer weighting and repeat separation. United States: Cold Spring Harbor Laboratory Press. doi:10.1101/gr.215087.116
+ - Koren, S., Schatz, M. C., Walenz, B. P., Martin, J., Howard, J. T., Ganapathy, G., . . . Joint Genome Institute (JGI). (2012). Hybrid error correction and de novo assembly of single-molecule sequencing reads. United States: Nature Publishing Group. doi:10.1038/nbt.2280
