@@ -12,7 +12,7 @@ The data that is available to try and answer these questions is for one sequenci
 ### Methods
 The steps and analyses required for carrying out this project successfully will be described below in roughly the order they will be performed.
 
-#### Quality Control:
+#### Read Quality Control:
 Before starting the project it is important to make sure the quality of the sequencing data is sufficient to go through with the analysis and figure out where problems might come up at later stages. With Illumina data, this will be done before and after preprocessing, with FastQC which is a quick and simple software for quality control and will provide an overview of the data. PacBio reads will later be assembled with Canu which also includes a quality control step.
 
 #### Preprocessing:
@@ -50,11 +50,9 @@ Zhang, X., de Maat, V., Guzmán Prieto, A.M., Prajsnar, T.K., Bayjanov, J.R., de
 
 ## Analyses
 
-### Reads Quality Control
+### 1 Reads Quality Control
 
 Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. 
-
-#### Results
 
 For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. There are no problems expected in further analses that correlate with the quality of the reads. 
 
@@ -70,16 +68,22 @@ FastQC did raise several warnings for all RNA sequencing data files on the other
 
 The quality scores are encoded with ASCII. This means that the numeric quality scores are stored in the FASTQ file as letters. For paired reads, there should normally be two files available (R1 and R2). 
 
+### 2 Reads Preprocessing
 
-### Genome Assembly
 
-The first step in the assembly of the *E. faecium* genome was an assembly of PacBio sequence data with Canu. Canu is specifically designed for the assembly of long PacBio or Nanopore reads and includes a correction and trimming step. This means seperate preprocessing of the PacBio data is not necessary. The genome size of *E. faecium* which needs to be included in the command for this step is derived from appendix 1 and amounts to 3.2 Mbp.
+### 3 Genome Assembly
 
-Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. 
+The first step in the assembly of the *E. faecium* genome was an assembly of PacBio sequence data with Canu. Canu is specifically designed for the assembly of long PacBio or Nanopore reads and includes a correction and trimming step. This means seperate preprocessing of the PacBio data is not necessary. The genome size of *E. faecium* which needs to be included in the command for this step is derived from appendix 1 and amounts to 3.2 Mbp. Another assembly was later generated with Spades using Illumina and Nanopore data (see Extra Analyses).
 
-#### Results
+The assembly that Canu produced from the PacBio reads has 12 contigs which is better than expected from the results of the paper. The authors have used Celera to asemble the genome which is related to Canu and generated an assembly with 15 contigs, a few of which were discarded due to low coverage. 
 
 #### Other Questions:
+
+ - What information can you get from the plots and reports given by the assembler (if you get any)?
+
+Probably the most informative output Canu provides is the report as it shows histogram of read lengths, the histogram of k-mers in the raw and corrected reads, the summary of corrected data, summary of overlaps, the summary of contig lengths and assembly statistics. Canu also returns two graphics that provide information about unitigs and the position of the unitigs in the contigs. 
+
+ - What intermediate steps generate informative output about the assembly?
 
  - What is the difference between a ‘contig’ and a ‘unitig’?
 
@@ -103,13 +107,55 @@ The k-mer size greatly affects the structure of the De Bruijn graph. A small k-m
 
 Canu uses a hybrid error correction step prior to assembly. First, high-identity short-read sequences are mapped to all the long-read sequences. Then, repeats are resolved by placing each short-read sequence in its highest identity repeat copy. Lastly, chimera and trimming problems are resolved within the long-read sequences and a consensus sequence is generated for each long-read sequence based on a multiple alignment of the short-read sequences. 
 
+ - Can you see any other letter appart from AGTC in your assembly? If so, what are those?
 
+There are no other letters present in the assembly.
 
+### 4 Assembly Evaluation
+
+Assembly evaluation was carried out with Quast and resulted in the following statistics: the number of contigs is 12 and the longest contig has a length of 2774867 bp. The total length of the assembly is 3143732 bp. N50 is 2774867 bp, N75 2774867 bp, L50 1 and
+L75 1 as well. All in all, this means that the assembly is pretty good. The number of contigs is a little high, but since the largest contig almost makes up 90 % of the assembly, this should not be a problem. Shorter contigs could also be discarded here. 
+
+#### Other Questions
+
+ - What do measures like N50, N90, etc. mean? How can they help you evaluate the quality of your assembly? Which measure is the best to summarize the quality of the assembly (N50, number of ORFs, completeness, total size, longest contig ...)
+
+N50 - the contig length such that using equal or longer contigs sum up to 50% of the bases in the assembly
+
+N75 - the contig length such that using equal or longer contigs sum up to 75% of the bases in the assembly
+
+NG50 - similar to N50, but in relation to the genome length as opposed to the assembly length
+
+L50 - the smallest number of contigs that cover 50 % of the asembly when their lengths are summed up
+
+L75 - the smallest number of contigs that cover 50 % of the asembly when their lengths are summed up
+
+These measures help evaluate the quality of the assembly by giving an overview and summary statistics and providing a basis for comparisons with other assemblies of related species or a reference. They are also useful to look at in order to evaluate if the assembly outcome is as expected. There are probably measures that make more sense to look at than others, for example NG50 is often preferred over N50 because it takes the actual genome size into account, but in general it is the best idea to look at all of them to get a broad picture of the assembly. For this specific assembly, I would suggest that the longest contig is the most informative and able to summarize the assembly well.  
+
+### 5 Annotation
+
+Annotation was performed on the assembly of PacBio reads with the Canu assembler. Prokka, a tool for both structural and functional annotaion of prokaryotic genomes, was used to perform this step which resulted in the annotation of 3193 protein coding sequences as well as 140 signal peptides, 101 tRNA, 1 tmRNA and 23 rRNA sequences. The authors of the paper have detected 3217 transcription units. These numbers differ because the authors have counted transcriptional units which include protein-coding genes as well as regulatory non-coding RNAs like microRNAs by mapping RNA transcripts to the assembly. 
+
+#### Other Questions:
+
+ - What types of features are detected by the software? Which ones are more reliable a priori?
+
+Prokka predicts protein-coding sequences, rRNA, tRNA, signal leader peptides and non-coding RNA. The prediction of rRNA genes is very reliable because they are highly conserved and relatively easy to detect and tRNA genes can be predicted with high confidence because of the structural information that is available for them. 
+
+ - Why is it more difficult to do the functional annotation in eukaryotic genomes?
+
+### Extra Analyses
+
+#### Genome Assembly with Illumina and Nanopore Reads
+
+Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. Later, another assembly was performed with k-mer size 77. 
 
 ### References
 
  - Deonier, R. C., Tavaré, S., & Waterman, M. S. (2005). Computational genome analysis: An introduction. New York: Springer. doi:10.1007/0-387-28807-4 
- - Cha, S., & Bird, D. M. (2016). Optimizing k-mer size using a variant grid search to enhance de novo genome assembly. Bioinformation, 12(2), 36–40. https://doi.org/10.6026/97320630012036
+ - Cha, S., & Bird, D. M. (2016). Optimizing k-mer size using a variant grid search to enhance de novo genome assembly. Bioinformation, 12(2), 36–40. doi:10.6026/97320630012036
  - Mahadik, K., Wright, C., Kulkarni, M., Bagchi, S., & Chaterji, S. (2019). Scalable genome assembly through parallel de bruijn graph construction for multiple k-mers. London: Nature Publishing Group. doi:10.1038/s41598-019-51284-9
  - Koren, S., Walenz, B. P., Berlin, K., Miller, J. R., Bergman, N. H., & Phillippy, A. M. (2017). Canu: Scalable and accurate long-read assembly via adaptive k -mer weighting and repeat separation. United States: Cold Spring Harbor Laboratory Press. doi:10.1101/gr.215087.116
  - Koren, S., Schatz, M. C., Walenz, B. P., Martin, J., Howard, J. T., Ganapathy, G., . . . Joint Genome Institute (JGI). (2012). Hybrid error correction and de novo assembly of single-molecule sequencing reads. United States: Nature Publishing Group. doi:10.1038/nbt.2280
+ - Sahu, A., Li, N., Dunkel, I., & Chung, H. (2020). EPIGENE: Genome-wide transcription unit annotation using a multivariate probabilistic model of histone modifications. England: BMC. doi:10.1186/s13072-020-00341-z
+ - Seemann, T. (2014). Prokka: Rapid prokaryotic genome annotation. England: doi:10.1093/bioinformatics/btu153
