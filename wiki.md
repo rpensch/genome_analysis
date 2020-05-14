@@ -114,7 +114,7 @@ There are no other letters present in the assembly.
 ### 4 Assembly Evaluation
 
 Assembly evaluation was carried out with Quast and resulted in the following statistics: the number of contigs is 12 and the longest contig has a length of 2774867 bp. The total length of the assembly is 3143732 bp. N50 is 2774867 bp, N75 2774867 bp, L50 1 and
-L75 1 as well. All in all, this means that the assembly is pretty good. The number of contigs is a little high, but since the largest contig almost makes up 90 % of the assembly, this should not be a problem. Shorter contigs could also be discarded here. 
+L75 1 as well. The number of N's per 100 kbp is 0 and GC content is 37.82 %. All in all, this means that the assembly is pretty good. The number of contigs is a little high, but since the largest contig almost makes up 90 % of the assembly, this should not be a problem. Shorter contigs could also be discarded here. The reference assembly that was used for comparison has 6 contigs with the largest having a length of 3130373 bp and the length of the assembly being 3259287 bp. N50 and N75 are 3130373 and L50 and L75 are both 1. The number of N's per 100 kbp is 0 here as well and the GC content is 37.69 %. There are definitly differences between the two assemblies, but these are not huge and therfore not concerning. They might be caused by different raw data, for example with a higher coverage or other sequencing technologies, more or less extensive preprocessing, different assembly parameters and polishing steps. 
 
 #### Other Questions
 
@@ -144,11 +144,37 @@ Prokka predicts protein-coding sequences, rRNA, tRNA, signal leader peptides and
 
  - Why is it more difficult to do the functional annotation in eukaryotic genomes?
 
-### Extra Analyses
+ - How many genes are annotated as ‘hypothetical protein’? Why is that so? How would you tackle that problem?
+
+The number of genes annotated as hypothetical proteins is 1389. Annotation of hypothetical proteins happens when there are known homologs available but their function is still unknown (conserved hypothetical) or a gene was predicted but there are no known homologs (hypothetical). Some methods to deal with them and actually find out what their function might be could be comparative genomics, methods looking at protein-protein interactions, clustering approches where similar genes that are grouped together are assumed to have the same function and genome context methods based on the analysis of fusion events, the conservation of gene neighborhood and the significant co-occurrence of genes across different species.
+
+### 6 Homology Search 
+
+### 7 Mapping
+
+### 8 Post-mapping analyses - Read counting
+
+## Extra Analyses
 
 #### Genome Assembly with Illumina and Nanopore Reads
 
 Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. Later, another assembly was performed with k-mer size 77. 
+
+#### Plasmid Identification
+
+First, plasmid identification was attempted using the Spades plasmid algorithm on Illumina and Nanopore reads which did not produce the expected results. Instead of identifying six plamsmids as the authods of the paper did, it did not recognize any. Even after swithing and trying several smaller k-mer sizes which is supposed to facilitate plasmid identification as well as removing the Nanopore reads which can cause problems with the plasmid algorithm, the results did not change. Then, PlasmidFinder (https://cge.cbs.dtu.dk/services/PlasmidFinder/) was used on the assembly of PacBio reads which finally identified six plasmids. It is hard to properly evaluate the different results since the authors do not mention how they reached the conclusion that the genome consists of one chromosome and six plasmids. 
+
+### 8 Post-mapping analyses - SNP calling
+
+#### Other Questions:
+
+ - What is the structure of a SAM file, and how does it relate to a BAM file?
+
+A SAM file generally stores read alignments against a reference sequence and consists of a header and the alignment. Lines in the header start with the at sign (@). The alignment section consists of eleven mandatory fields and other optional ones. The mandatory fields are query name of the read or read pair, bitwise flag, reference name, 1-based leftmost position of clipped alignment, mapping quality, extended CIGAR STRING (Concise Idiosyncratic Gapped Alignment Report), mate reference name, 1-based leftmost mate position, inferred insert size, query sequence on the same strand as the reference and query quality. A BAM file stores exactely the same information but in compressed binary representation. 
+
+ - What is the structure of vcf and bcf files?
+
+ A vcf file contains lines of meta data starting with '##', a header starting with '#' and data lines with eight mandatory and several optional columns that store information about a position in the genome and genotype information on samples for each position. A bcf file is the binary, compressed equivalent of a vcf file.
 
 ### References
 
@@ -159,3 +185,9 @@ Illumina and Nanopore reads were then assembled together using Spades which spec
  - Koren, S., Schatz, M. C., Walenz, B. P., Martin, J., Howard, J. T., Ganapathy, G., . . . Joint Genome Institute (JGI). (2012). Hybrid error correction and de novo assembly of single-molecule sequencing reads. United States: Nature Publishing Group. doi:10.1038/nbt.2280
  - Sahu, A., Li, N., Dunkel, I., & Chung, H. (2020). EPIGENE: Genome-wide transcription unit annotation using a multivariate probabilistic model of histone modifications. England: BMC. doi:10.1186/s13072-020-00341-z
  - Seemann, T. (2014). Prokka: Rapid prokaryotic genome annotation. England: doi:10.1093/bioinformatics/btu153
+ - Sivashankari, S., & Shanmughavel, P. (2006). Functional annotation of hypothetical proteins - A review. Singapore: doi:10.6026/97320630001335
+
+
+
+
+  - Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., . . . 1000 Genome Project Data Processing Subgroup. (2009). The sequence alignment map format and SAMtools. England: Oxford University Press. doi:10.1093/bioinformatics/btp352

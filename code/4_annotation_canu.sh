@@ -15,3 +15,7 @@ module load prokka
 prokka --outdir analyses/4_annotation --prefix efaecium_annotation \
 --genus Enterococcus --species faecium --strain E745 --gram pos \
 analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta
+
+
+
+grep 'hypothetical protein' efaecium_annotation.faa | wc

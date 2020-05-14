@@ -12,11 +12,17 @@ module load bioinfo-tools
 module load quast
 
 # Your commands
+
 mv analyses/2_genome_assembly/1_efaecium_canu/efaecium.contigs.fasta \
 analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta #rename canu assembly file
 
 mv analyses/2_genome_assembly/2_efaecium_spades/contigs.fasta \
 analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta #rename spades assembly file
+
+quast.py analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
+data/reference/GCF_001720945.1_ASM172094v1_genomic.fna \
+-o analyses/3_assembly_evaluation/quast \
+--gene-finding
 
 quast.py analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
 analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta \

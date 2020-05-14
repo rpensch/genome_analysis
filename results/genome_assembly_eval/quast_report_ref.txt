@@ -1,0 +1,24 @@
+All statistics are based on contigs of size >= 500 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                    efaecium_canu.contigs  GCF_001720945.1_ASM172094v1_genomic
+# contigs (>= 0 bp)         12                     6                                  
+# contigs (>= 1000 bp)      12                     5                                  
+# contigs (>= 5000 bp)      9                      5                                  
+# contigs (>= 10000 bp)     8                      5                                  
+# contigs (>= 25000 bp)     4                      3                                  
+# contigs (>= 50000 bp)     2                      2                                  
+Total length (>= 0 bp)      3143732                3259287                            
+Total length (>= 1000 bp)   3143732                3258401                            
+Total length (>= 5000 bp)   3134078                3258401                            
+Total length (>= 10000 bp)  3124278                3258401                            
+Total length (>= 25000 bp)  3065132                3232142                            
+Total length (>= 50000 bp)  2997658                3187916                            
+# contigs                   12                     6                                  
+Largest contig              2774867                3130373                            
+Total length                3143732                3259287                            
+GC (%)                      37.82                  37.69                              
+N50                         2774867                3130373                            
+N75                         2774867                3130373                            
+L50                         1                      1                                  
+L75                         1                      1                                  
+# N's per 100 kbp           0.00                   0.00                               
