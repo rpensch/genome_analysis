@@ -54,7 +54,7 @@ Zhang, X., de Maat, V., Guzmán Prieto, A.M., Prajsnar, T.K., Bayjanov, J.R., de
 
 Quality control of Illumina raw sequence data was carried out with FastQC. This program provides a quick and simple qulaity check and gives an overview about basic statistics, per base sequence quality, sequence content, GC-content and N-content, per sequence GC-content, sequence length distribution, sequence duplication levels, overrepresented sequences and Kmer-content. 
 
-For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary and reads will therefore not be trimmed any further. There are no problems expected in further analses that correlate with the quality of the reads. 
+For both genomic Illumina read files, the quality checks came back very good, there do not seem to be any problems with low quality. According to the results of this quality control with FastQC, preprocessing of the data is not necessary. Trimming will be performed for learning purposes but the untrimmed reads will be used in further analyses. There are no problems expected in further analyses that correlate with the quality of the reads. 
 
 FastQC did raise several warnings for all RNA sequencing data files on the other hand. The categories sequence duplication levels and overrepresented sequences produced failures in almost all the files as well as per base sequence content and per base GC content. Sequence length distributions and per tile sequence quality seemed to cause problems multiple times too. These warnings can mostly be explained simply by the nature of RNA sequencing data. It is, for example, expected that some transcripts occur more often than others which can lead to warnings for duplication levels and overrepresented sequences meaning that this does not actually pose a problem to the analysis. The length of RNA transcripts varies as well, so it is entirely normal that the sequence length distribution varies. Per base GC content and per base sequence content are prone to be biased by the overrepresented sequences in our data, so this is nothing to worry about either. Lastly, the FastQC manual suggests that warnings for per tile sequence quality can be ignored if they only seem to affect a very small number of tiles which is the case here. So, all in all the quality of the RNA sequencing data seems to be fine and should not cause problems further down the line which means that no further preprocessing is to be conducted. 
 
@@ -70,6 +70,14 @@ The quality scores are encoded with ASCII. This means that the numeric quality s
 
 ### 2 Reads Preprocessing
 
+Reads preprocessing of the genomic Illumina reads was performed with Trimmomatic. Since the reads have been preprocessed already, there was not much left to correct, but because the per base sequence quality still dropped a little bit towards the end of the reads, trailing was used to remove low quality bases at the ends. 
+
+#### Other Questions:
+
+ - What do the LEADING, TRAILING and SLIDINGWINDOW options do?
+
+Leading removes low quality bases at the beginning and trailing at the end of the read. Slidingwindow trimms the read once the average quality in the sliding window falls below a threshold. 
+
 
 ### 3 Genome Assembly
 
@@ -81,9 +89,11 @@ The assembly that Canu produced from the PacBio reads has 12 contigs which is be
 
  - What information can you get from the plots and reports given by the assembler (if you get any)?
 
-Probably the most informative output Canu provides is the report as it shows histogram of read lengths, the histogram of k-mers in the raw and corrected reads, the summary of corrected data, summary of overlaps, the summary of contig lengths and assembly statistics. Canu also returns two graphics that provide information about unitigs and the position of the unitigs in the contigs. 
+Probably the most informative output Canu provides is the report as it shows histogram of read lengths, the histogram of k-mers in the raw and corrected reads, the summary of corrected data, summary of overlaps, the summary of contig lengths and assembly statistics.
 
  - What intermediate steps generate informative output about the assembly?
+
+Canu's correction and trimming steps generate output that might be intersting to look at and know exactly what happened to the reads. Looking at the graph and ambiguities in it could be informative, too. 
 
  - What is the difference between a ‘contig’ and a ‘unitig’?
 
@@ -107,6 +117,10 @@ The k-mer size greatly affects the structure of the De Bruijn graph. A small k-m
 
 Canu uses a hybrid error correction step prior to assembly. First, high-identity short-read sequences are mapped to all the long-read sequences. Then, repeats are resolved by placing each short-read sequence in its highest identity repeat copy. Lastly, chimera and trimming problems are resolved within the long-read sequences and a consensus sequence is generated for each long-read sequence based on a multiple alignment of the short-read sequences. 
 
+ - How different do different assemblers perform for the same data?
+
+
+
  - Can you see any other letter appart from AGTC in your assembly? If so, what are those?
 
 There are no other letters present in the assembly.
@@ -114,7 +128,7 @@ There are no other letters present in the assembly.
 ### 4 Assembly Evaluation
 
 Assembly evaluation was carried out with Quast and resulted in the following statistics: the number of contigs is 12 and the longest contig has a length of 2774867 bp. The total length of the assembly is 3143732 bp. N50 is 2774867 bp, N75 2774867 bp, L50 1 and
-L75 1 as well. The number of N's per 100 kbp is 0 and GC content is 37.82 %. All in all, this means that the assembly is pretty good. The number of contigs is a little high, but since the largest contig almost makes up 90 % of the assembly, this should not be a problem. Shorter contigs could also be discarded here. The reference assembly that was used for comparison has 6 contigs with the largest having a length of 3130373 bp and the length of the assembly being 3259287 bp. N50 and N75 are 3130373 and L50 and L75 are both 1. The number of N's per 100 kbp is 0 here as well and the GC content is 37.69 %. There are definitly differences between the two assemblies, but these are not huge and therfore not concerning. They might be caused by different raw data, for example with a higher coverage or other sequencing technologies, more or less extensive preprocessing, different assembly parameters and polishing steps. 
+L75 1 as well. The number of N's per 100 kbp is 0 and GC content is 37.82 %. All in all, this means that the assembly is pretty good. The number of contigs is a little high, but since the largest contig almost makes up 90 % of the assembly, this should not be a problem. Shorter contigs could also be discarded here. The reference assembly that was used for comparison has 6 contigs with the largest having a length of 3130373 bp and the length of the assembly being 3259287 bp. N50 and N75 are 3130373 and L50 and L75 are both 1. The number of N's per 100 kbp is 0 here as well and the GC content is 37.69 %. There are definitly differences between the two assemblies, but these are not huge and therfore not concerning. They might be caused by different raw data, for example with a higher coverage or other sequencing technologies, more or less extensive preprocessing, different assembly parameters and polishing steps. Also, several sequence were unassembled by Canu. In this case, the assembly generated during this course project is not as good as the reference assembly. The number of contigs in the reference is only half as big and the longest contig of the reference assembly is significantly longer as well which means that N50 and N75 measures give better results too.
 
 #### Other Questions
 
@@ -148,19 +162,25 @@ Prokka predicts protein-coding sequences, rRNA, tRNA, signal leader peptides and
 
 The number of genes annotated as hypothetical proteins is 1389. Annotation of hypothetical proteins happens when there are known homologs available but their function is still unknown (conserved hypothetical) or a gene was predicted but there are no known homologs (hypothetical). Some methods to deal with them and actually find out what their function might be could be comparative genomics, methods looking at protein-protein interactions, clustering approches where similar genes that are grouped together are assumed to have the same function and genome context methods based on the analysis of fusion events, the conservation of gene neighborhood and the significant co-occurrence of genes across different species.
 
+ - How can you evaluate the quality of the obtained functional annotation?
+
+There are a few tools available that one can use to evaluate the qulity of an annotation, but in general one can look at the annotations to see if they are as expected for the species, nothing important is missing and no strange genes are added that do not make sense. Furthermore, it is advisable to compare the annotation to a curated annotation of a reference genome and check if there are major differences. 
+
 ### 6 Homology Search 
 
 ### 7 Mapping
 
 ### 8 Post-mapping analyses - Read counting
 
+### 9 Diff Ex
+
 ## Extra Analyses
 
-#### Genome Assembly with Illumina and Nanopore Reads
+### 10 Genome Assembly with Illumina and Nanopore Reads
 
 Illumina and Nanopore reads were then assembled together using Spades which specializes in assembling data from different sequencing methods as well as long and short reads in one step. Illumina and Nanopore files were included in the command according to the manual and to reduce running time the Kmer size was set to 55 instead of trying various different ones. Later, another assembly was performed with k-mer size 77. 
 
-#### Plasmid Identification
+### 11 Plasmid Identification
 
 First, plasmid identification was attempted using the Spades plasmid algorithm on Illumina and Nanopore reads which did not produce the expected results. Instead of identifying six plamsmids as the authods of the paper did, it did not recognize any. Even after swithing and trying several smaller k-mer sizes which is supposed to facilitate plasmid identification as well as removing the Nanopore reads which can cause problems with the plasmid algorithm, the results did not change. Then, PlasmidFinder (https://cge.cbs.dtu.dk/services/PlasmidFinder/) was used on the assembly of PacBio reads which finally identified six plasmids. It is hard to properly evaluate the different results since the authors do not mention how they reached the conclusion that the genome consists of one chromosome and six plasmids. 
 
