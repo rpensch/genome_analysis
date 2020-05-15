@@ -172,8 +172,30 @@ There are a few tools available that one can use to evaluate the qulity of an an
 
  - How comparable are the results obtained from two different structural annotation softwares?
 
+In theory the results should be comparable but since gene prediction can be a difficult task and softwares are not perfect there can be differences in the results. Softwares use different approaches and are more or less conservative with their predictions, so it can make sense to use different tools for structural annotation and compare the results.
 
-### 6 Homology Search 
+
+### 6 Homology Search and Synteny Comparison
+
+In order to compare synteny with a closely related genome a homology search was carried out using BLASTN to search for homologous species. After that Enterococcus faecalis was chosen because it was one of the best hits and mentioned by the authors of the paper and an alignment file with the E. faecium assembly was created by again using BLASTN. 
+
+
+
+#### Other Questions:
+
+ - How relevant is the output format that you choose?
+
+When using blastn it can be quite important to specify the output format since this will determine the results one gets.
+
+ - How do the resulting hits vary when you change the minimum e-value?
+
+ - How is the alignment score calculated?
+
+The BLASTN alignment score is calculated by assigning score for each aligned pair and then summing up the scores for the whole alignment. For identical letters the score is +2 and for nonidentical it is -3. Gap openings are penalized stronger than gap extensions.  
+
+ - How important is the number of threads when you blast against a database, or against a particular sequence?
+
+ It is a lot more important to choose a higher number of threads when blasting against a database since this can take a lot more time and blasting against only one sequence is rather quick.
 
 ### 7 Mapping
 
