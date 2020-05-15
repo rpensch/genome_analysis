@@ -72,6 +72,8 @@ The quality scores are encoded with ASCII. This means that the numeric quality s
 
 Reads preprocessing of the genomic Illumina reads was performed with Trimmomatic. Since the reads have been preprocessed already, there was not much left to correct, but because the per base sequence quality still dropped a little bit towards the end of the reads, trailing was used to remove low quality bases at the ends. 
 
+After trimming the quality was evaluated with FastQC one more time. 118589 sequences were discarded in each of the two files. This should not cause any problems in the future since the Illumina reads will be used to assemble the genome together with Nanopore reads which means there will most likely be more than enough data available to generate the assembly. In general, the quality has improved in the way that the per base sequence quality score towards the end of the reads is now better. FastQC does raise a warning in sequence length distribution which was expected since the reads will low quality at the ends were shortened and now the reads do not have the same length anymore. 
+
 #### Other Questions:
 
  - What do the LEADING, TRAILING and SLIDINGWINDOW options do?
@@ -158,6 +160,8 @@ Prokka predicts protein-coding sequences, rRNA, tRNA, signal leader peptides and
 
  - Why is it more difficult to do the functional annotation in eukaryotic genomes?
 
+First of all, structural annotation of eukaryotic genomes is a lot more difficult because coding exons are short, and separated by introns and the upstream region of the genes is more variable than in prokaryotes. Eukaryotic genomes are very repeat-rich which can lead to a huge amount of BLAST alignment when they are not masekd properly and transposon ORFs can look like host genes for an annotation tool. Then, there is also alternative splicing in eukatyotes which means that even if tools are able to predict genes well, not all proteins are predicted which makes functional annotation very difficult. 
+
  - How many genes are annotated as ‘hypothetical protein’? Why is that so? How would you tackle that problem?
 
 The number of genes annotated as hypothetical proteins is 1389. Annotation of hypothetical proteins happens when there are known homologs available but their function is still unknown (conserved hypothetical) or a gene was predicted but there are no known homologs (hypothetical). Some methods to deal with them and actually find out what their function might be could be comparative genomics, methods looking at protein-protein interactions, clustering approches where similar genes that are grouped together are assumed to have the same function and genome context methods based on the analysis of fusion events, the conservation of gene neighborhood and the significant co-occurrence of genes across different species.
@@ -165,6 +169,9 @@ The number of genes annotated as hypothetical proteins is 1389. Annotation of hy
  - How can you evaluate the quality of the obtained functional annotation?
 
 There are a few tools available that one can use to evaluate the qulity of an annotation, but in general one can look at the annotations to see if they are as expected for the species, nothing important is missing and no strange genes are added that do not make sense. Furthermore, it is advisable to compare the annotation to a curated annotation of a reference genome and check if there are major differences. 
+
+ - How comparable are the results obtained from two different structural annotation softwares?
+
 
 ### 6 Homology Search 
 
@@ -206,6 +213,7 @@ A SAM file generally stores read alignments against a reference sequence and con
  - Sahu, A., Li, N., Dunkel, I., & Chung, H. (2020). EPIGENE: Genome-wide transcription unit annotation using a multivariate probabilistic model of histone modifications. England: BMC. doi:10.1186/s13072-020-00341-z
  - Seemann, T. (2014). Prokka: Rapid prokaryotic genome annotation. England: doi:10.1093/bioinformatics/btu153
  - Sivashankari, S., & Shanmughavel, P. (2006). Functional annotation of hypothetical proteins - A review. Singapore: doi:10.6026/97320630001335
+ - Yandell, M., & Ence, D. (2012). A beginner's guide to eukaryotic genome annotation. Nature Reviews. Genetics, 13(5), 329-342. doi:10.1038/nrg3174
 
 
 

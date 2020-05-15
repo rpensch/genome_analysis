@@ -14,4 +14,6 @@ module load trimmomatic
 
 # Your commands
 
- java -jar $TRIMMOMATIC_HOME/trimmomatic.jar PE data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz analyses/1_preprocessing/trimming/illumina_trimmed_paired_1 analyses/1_preprocessing/trimming/illumina_trimmed_unpaired_1 analyses/1_preprocessing/trimming/illumina_trimmed_paired_2 analyses/1_preprocessing/trimming/illumina_trimmed_unpaired_2 TRAILING:28 MINLEN:75
+java -jar $TRIMMOMATIC_HOME/trimmomatic.jar PE data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_1_clean.fq.gz data/genomic_data/raw_data/Illumina/E745-1.L500_SZAXPI015146-56_2_clean.fq.gz analyses/1_preprocessing/trimming/illumina_trimmed_paired_1 analyses/1_preprocessing/trimming/illumina_trimmed_unpaired_1 analyses/1_preprocessing/trimming/illumina_trimmed_paired_2 analyses/1_preprocessing/trimming/illumina_trimmed_unpaired_2 TRAILING:28 MINLEN:75
+
+fastqc analyses/1_preprocessing/trimming/illumina_trimmed_paired_1 analyses/1_preprocessing/trimming/illumina_trimmed_paired_2 --outdir=analyses/1_preprocessing/fastqc_trimmed
