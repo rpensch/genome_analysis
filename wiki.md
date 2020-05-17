@@ -189,6 +189,8 @@ When using blastn it can be quite important to specify the output format since t
 
  - How do the resulting hits vary when you change the minimum e-value?
 
+Changing the minimum e-value is a way of filtering the quality of the hits that will be returned as results.
+
  - How is the alignment score calculated?
 
 The BLASTN alignment score is calculated by assigning score for each aligned pair and then summing up the scores for the whole alignment. For identical letters the score is +2 and for nonidentical it is -3. Gap openings are penalized stronger than gap extensions.  
@@ -199,7 +201,11 @@ The BLASTN alignment score is calculated by assigning score for each aligned pai
 
 ### 7 Mapping
 
+Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it and sorted. 
+
 ### 8 Post-mapping analyses - Read counting
+
+Mapped reads were counted with the Python package HTSeq that uses the BAM file generated in the previous step as well as the gff file produced during annotation. The number of reads is mostly distributed between zero and around 2000 with the median being at around 500 reads (see results) which means that most genes are expressed. A gene counts as expressed when one or more reads map to it. 
 
 ### 9 Diff Ex
 
@@ -213,7 +219,7 @@ Illumina and Nanopore reads were then assembled together using Spades which spec
 
 First, plasmid identification was attempted using the Spades plasmid algorithm on Illumina and Nanopore reads which did not produce the expected results. Instead of identifying six plamsmids as the authods of the paper did, it did not recognize any. Even after swithing and trying several smaller k-mer sizes which is supposed to facilitate plasmid identification as well as removing the Nanopore reads which can cause problems with the plasmid algorithm, the results did not change. Then, PlasmidFinder (https://cge.cbs.dtu.dk/services/PlasmidFinder/) was used on the assembly of PacBio reads which finally identified six plasmids. It is hard to properly evaluate the different results since the authors do not mention how they reached the conclusion that the genome consists of one chromosome and six plasmids. 
 
-### 8 Post-mapping analyses - SNP calling
+### 12 Post-mapping analyses - SNP calling
 
 #### Other Questions:
 

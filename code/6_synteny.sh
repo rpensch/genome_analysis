@@ -15,7 +15,9 @@ module load blast
 # Your commands
 
 blastn –db nt –query analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta –out analyses/8_synteny/homology_search_results.out -outfmt "6 qseqid sseqid sacc saccvers sscinames evalue pident" -num_threads 2
-
 blastn –db nt –query analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta -evalue 1 –out analyses/8_synteny/homology_search_results1.out  -outfmt "6 qseqid sseqid sacc saccvers sscinames evalue pident" -num_threads 2
 
 blastn -query analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta -subject analyses/8_synteny/GCF_000391485.2_ASM39148v2_genomic.fna -out analyses/8_synteny/efaecium_efaecalis_blast.out -outfmt 6 -num_threads 2
+
+wc -l homology_search_results.out
+wc -l homology_search_results1.out

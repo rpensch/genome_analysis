@@ -7,8 +7,8 @@ With: https://informatics.fas.harvard.edu/differential-expression-with-deseq2.ht
 
 Set the working directory
 
-```{r include=FALSE}
-setwd("C:/Users/Raphaela/UU/GA/genome_analysis/results/htseq_readcount")
+```{r setup}
+knitr::opts_knit$set(root.dir = 'C:/Users/Raphaela/UU/GA/genome_analysis/results/8_rna_readcount/')
 ```
 
 Install DESeq2
@@ -20,6 +20,13 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install("DESeq2")
 
 library("DESeq2")
+
+install.packages("gplots")
+library(gplots)
+
+install.packages("RColorBrewer")
+library( "RColorBrewer" )
+library( "genefilter" )
 ```
 
 Read in the RNA count files of the different samples and conditions and create a data frame:
@@ -51,9 +58,6 @@ dataset <- DESeqDataSetFromMatrix(countData = countData,
                                   colData = colData,
                                   design = ~condition)
 dds <- DESeq(dataset)
-
-result <- results(dds, contrast=c('condition','Serum','BH'))
-result <- result[complete.cases(result),]  #remove any rows with NA
 ```
 
 ```{r}
@@ -61,14 +65,42 @@ summary(result)
 ```
 
 ```{r}
-n = 20
-resOrdered <- result[order(result$padj),]
-topResults <- rbind( resOrdered[ resOrdered[,'log2FoldChange'] > 0, ][1:n,], 
-                    resOrdered[ resOrdered[,'log2FoldChange'] < 0, ][n:1,] )
-topResults[c(1:5,(2*n-4):(2*n)), c('baseMean','log2FoldChange','padj')]
+result <- results(dds, contrast=c('condition','Serum','BH'))
+significant_result <- result[ which(result$padj < 0.1 ), ]
+```
+
+Significant genes with the strongest downregulation:
+
+```{r}
+head(significant_result[order(significant_result$log2FoldChange),], n = 10)
+```
+
+Significant genes with the strongest upregulation:
+
+```{r}
+tail(significant_result[order(significant_result$log2FoldChange),], n = 10)
+```
+
+
+```{r}
+plotMA(result, ylim = c(-1, 1) )
 ```
 
 ```{r}
-plotMA(result)
+plotDispEsts(dds, ylim = c(1e-6, 1e1))
+```
+
+```{r}
+hist( result$pvalue, breaks=20, col="grey" )
+```
+
+```{r}
+rlog_dds <- rlog(dds)
+plotPCA(rlog_dds)
+```
+
+```{r}
+topVarGenes <- head(order(rowVars(assay(rlog_dds)), decreasing=TRUE), 35)
+heatmap.2(assay(rlog_dds)[ topVarGenes,], scale="row",trace="none", dendrogram="column",col = colorRampPalette(rev(brewer.pal(9, "RdBu")))(255))
 ```
 
