@@ -1,1 +1,2 @@
 # genome_analysis
+This repository includes all the material of my project for Paper I in the course Genome Analysis. The project plan and a description of all the analyses with an interpretation of the results can be found in [wiki](https://github.com/rpensch/genome_analysis/blob/master/wiki.md). The folder [code](https://github.com/rpensch/genome_analysis/tree/master/code) includes all the commands and scripts used to carry out this project and results and plots are in [results](https://github.com/rpensch/genome_analysis/tree/master/results). 
