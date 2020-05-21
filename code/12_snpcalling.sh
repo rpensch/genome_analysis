@@ -37,9 +37,9 @@ data/snp_extra/SRR3306347_2.fastq.gz | samtools view -b | samtools sort -o analy
 # Load modules 
 
 module load bioinfo-tools
-module load samtools
+module load samtools/0.1.19 
 module load python/2.7.15
-module load bcftools
+
 
 # Your commands
 
@@ -52,4 +52,23 @@ analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797974.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797969.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797970.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797971.bam \
-analyses/5_snpcalling/rna_mapping_snp_extra_paired.bam | bcftools view -bvcg | vcfutils.pl varFilter - > snp_calling.vcf
+analyses/5_snpcalling/rna_mapping_snp_extra_paired.bam > my-raw.bcf
+
+bcftools view -bvcg my-raw.bcf > my-var.bcf
+bcftools view my-var.bcf | vcfutils.pl varFilter - > snp_calling.vcf
+
+
+
+module load bioinfo-tools bcftools
+
+grep -v '#' snp_calling.vcf | wc -l
+
+bcftools view -v snps snp_calling.vcf > snps.vcf
+grep -v '#' snps.vcf | wc -l
+
+bcftools view -v indels snp_calling.vcf > indels.vcf
+grep -v '#' snps.vcf | wc -l
+
+bcftools view -i 'QUAL>10' snp_calling.vcf | grep -v '#' | wc -l
+bcftools view -i 'QUAL>50' snp_calling.vcf | grep -v '#' | wc -l
+bcftools view -i 'QUAL>100' snp_calling.vcf | grep -v '#' | wc -l

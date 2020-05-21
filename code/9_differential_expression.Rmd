@@ -61,24 +61,30 @@ dds <- DESeq(dataset)
 ```
 
 ```{r}
-summary(result)
-```
-
-```{r}
 result <- results(dds, contrast=c('condition','Serum','BH'))
 significant_result <- result[ which(result$padj < 0.1 ), ]
+summary(result)
 ```
 
 Significant genes with the strongest downregulation:
 
 ```{r}
-head(significant_result[order(significant_result$log2FoldChange),], n = 10)
+x <- head(significant_result[order(significant_result$log2FoldChange),], n = 20)
+
+write.table(x, "diff_expr_genes_down.txt", sep = " ", dec = ".",
+            row.names = TRUE, col.names = TRUE)
+x
 ```
 
 Significant genes with the strongest upregulation:
 
 ```{r}
-tail(significant_result[order(significant_result$log2FoldChange),], n = 10)
+y <- tail(significant_result[order(significant_result$log2FoldChange),], n = 20)
+
+write.table(y, "diff_expr_genes_up.txt", sep = " ", dec = ".",
+            row.names = TRUE, col.names = TRUE)
+
+y
 ```
 
 
@@ -91,7 +97,7 @@ plotDispEsts(dds, ylim = c(1e-6, 1e1))
 ```
 
 ```{r}
-hist( result$pvalue, breaks=20, col="grey" )
+hist( result$pvalue, breaks=20, col="grey")
 ```
 
 ```{r}
@@ -100,7 +106,10 @@ plotPCA(rlog_dds)
 ```
 
 ```{r}
-topVarGenes <- head(order(rowVars(assay(rlog_dds)), decreasing=TRUE), 35)
+topVarGenes <- head(order(rowVars(assay(rlog_dds)), decreasing=TRUE), 50)
 heatmap.2(assay(rlog_dds)[ topVarGenes,], scale="row",trace="none", dendrogram="column",col = colorRampPalette(rev(brewer.pal(9, "RdBu")))(255))
 ```
 
+```{r}
+topVarGenes
+```

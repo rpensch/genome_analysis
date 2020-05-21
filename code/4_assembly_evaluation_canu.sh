@@ -6,7 +6,7 @@ analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta #rename c
 
 nucmer --mum -p 1_assembly_reference data/reference/GCF_001720945.1_ASM172094v1_genomic.fna analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta
 
-mummerplot -p 1_assembly_mummerplot_reference2 -R data/reference/GCF_001720945.1_ASM172094v1_genomic.fna -Q analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta --png 1_assembly_reference.delta 
+mummerplot -p 1_assembly_mummerplot_reference -R data/reference/GCF_001720945.1_ASM172094v1_genomic.fna -Q analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta --png 1_assembly_reference.delta 
 
 #!/bin/bash -l   
 #SBATCH -A g2020008 
