@@ -8,7 +8,7 @@ With: https://informatics.fas.harvard.edu/differential-expression-with-deseq2.ht
 Set the working directory
 
 ```{r setup}
-knitr::opts_knit$set(root.dir = 'C:/Users/Raphaela/UU/GA/genome_analysis/results/8_rna_readcount/')
+knitr::opts_knit$set(root.dir = 'C:/Users/Raphaela/Documents/UU/GA/genome_analysis/results/8_rna_readcount/')
 ```
 
 Install DESeq2
@@ -113,3 +113,7 @@ heatmap.2(assay(rlog_dds)[ topVarGenes,], scale="row",trace="none", dendrogram="
 ```{r}
 topVarGenes
 ```
+```{r}
+plotCounts(dds)
+```
+

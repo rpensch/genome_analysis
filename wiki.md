@@ -185,15 +185,13 @@ In theory the results should be comparable but since gene prediction can be a di
 
 In order to compare synteny with a closely related genome a homology search was carried out using BLASTN to search for homologous species. After that *Enterococcus faecalis* was chosen because it was the best hit with a high e-value and sequence identity. It was also mentioned by the authors of the paper as a strain that causes similar nosocomial infections to *E. faecium*, so a comparison seemed interesting. An alignment of an *E. faecalis* reference assembly with the E. faecium assembly generated with Canu was created by again using BLASTN. This alignment was used in ACT together with the .gff annotation file of the *E. faecium* and the genbank file of *E. faecalis* to compare synteny. 
 
-Synteny between two genomes exists when there are regions of genome sequence or a certain number of genes that are co-arranged together with the other genome. When comparing *E. faecalis* and *E. faecium* one can observe a great number of these blocks of synteny, some in the same orientation, some inverted. This is to be expected since they are so closely related and the These blocks are rather short considering their relatedness and often surprisingly far apart in the length of the genome from their corresponding block in the other genome. 
-
-
+Synteny between two genomes exists when there are regions of genome sequence or a certain number of genes that are co-arranged together with the other genome. When comparing *E. faecalis* and *E. faecium* one can observe a great number of these blocks of synteny, some in the same orientation, some inverted. This is to be expected since they are so closely related. These blocks are rather short considering their relatedness, which could indicate that the quality of the Canu assembly is not sufficient. The analysis of differential expression later revealed a gene cluster that is differentially expressed for growth in BH and serum (see 9 Differential Expression). These genes play a role in purine biosynthesis and are suspected to be important for *E. faecium*'s ability to grow in human serum. Synteny of these upregulated genes was established between *E. faecium* and *E. faecalis* which indicates that they have a functional relationship and their order is conserved. 
 
 #### Other Questions:
 
  - How relevant is the output format that you choose?
 
-When using blastn it can be quite important to specify the output format since this will determine the results one gets.
+When using blastn it can be quite important to specify the output format since this will determine the results one gets. In this specific case, the output also needs to be readable by ACT.
 
  - How do the resulting hits vary when you change the minimum e-value?
 
@@ -205,13 +203,34 @@ The BLASTN alignment score is calculated by assigning score for each aligned pai
 
  - How important is the number of threads when you blast against a database, or against a particular sequence?
 
- It is a lot more important to choose a higher number of threads when blasting against a database since this can take a lot more time and blasting against only one sequence is rather quick.
+It is a lot more important to choose a higher number of threads when blasting against a database since this can take a lot more time and blasting against only one sequence is rather quick.
 
 ### 7 Mapping
 
-Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it and sorted. 
+Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it with BWA and sorted with Samtools. The results of the mapping step were used to count the reads (see 8 Read Counting) and do differential expression analysis (see 9 Differential Expression). 
 
-### 8 Read counting
+#### Other Questions: 
+ - What percentage of your reads map back to your contigs? Why do you think that is? 
+ 
+Most reads, namely 98.6, map back to the contigs. Reasons why not all the reads map back could be that the assembly is incomplete or flawed. 
+
+ - What potential issues can cause mRNA reads not to map properly to genes in the chromosome? Do you expect this to differ between prokaryotic and eukaryotic projects?
+
+In Eukaryotes, RNA splicing is performed in order to remove intronic regions. This has to be considered when aligning mRNA to the genome and makes mapping more difficult. Another problem to deal with in eukaryotic projects is alternative splicing where some exons are not included in the final mRNA product. 
+
+ - What percentage of reads map to genes? 
+ 
+ 70.6 % of the reads map to genes. 
+
+ - How many reads do not map to genes? What does that mean? How does that relate to the type of sequencing data you are mapping?
+
+16571329 reads do not map to any features. 
+annotation
+
+ - What do you interpret from your read coverage differences across the genome?
+ - Do you see big differences between replicates?
+
+### 8 Read Counting
 
 Mapped reads were counted with the Python package HTSeq that uses the BAM file generated in the previous step as well as the gff file produced during annotation. The number of reads is mostly distributed between zero and around 2000 with the median being at around 500 reads (see results) which means that most genes are expressed. A gene counts as expressed when one or more reads map to it. 
 
