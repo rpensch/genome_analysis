@@ -52,23 +52,23 @@ analyses/6_rna_mapping/rna_mapping_BH_paired_ERR1797974.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797969.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797970.bam \
 analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797971.bam \
-analyses/5_snpcalling/rna_mapping_snp_extra_paired.bam > my-raw.bcf
+analyses/5_snpcalling/rna_mapping_snp_extra_paired.bam > analyses/5_snp_calling/my-raw.bcf
 
-bcftools view -bvcg my-raw.bcf > my-var.bcf
-bcftools view my-var.bcf | vcfutils.pl varFilter - > snp_calling.vcf
+bcftools view -bvcg analyses/5_snp_calling/my-raw.bcf > analyses/5_snp_calling/my-var.bcf
+bcftools view analyses/5_snp_calling/my-var.bcf | vcfutils.pl varFilter - > analyses/5_snp_calling/snp_calling.vcf
 
 
 
 module load bioinfo-tools bcftools
 
-grep -v '#' snp_calling.vcf | wc -l
+grep -v '#' analyses/5_snp_calling/snp_calling.vcf | wc -l
 
 bcftools view -v snps snp_calling.vcf > snps.vcf
-grep -v '#' snps.vcf | wc -l
+grep -v '#' analyses/5_snp_calling/snps.vcf | wc -l
 
 bcftools view -v indels snp_calling.vcf > indels.vcf
-grep -v '#' snps.vcf | wc -l
+grep -v '#' analyses/5_snp_calling/snps.vcf | wc -l
 
-bcftools view -i 'QUAL>10' snp_calling.vcf | grep -v '#' | wc -l
-bcftools view -i 'QUAL>50' snp_calling.vcf | grep -v '#' | wc -l
-bcftools view -i 'QUAL>100' snp_calling.vcf | grep -v '#' | wc -l
+bcftools view -i 'QUAL>10' analyses/5_snp_calling/snp_calling.vcf | grep -v '#' | wc -l
+bcftools view -i 'QUAL>50' analyses/5_snp_calling/snp_calling.vcf | grep -v '#' | wc -l
+bcftools view -i 'QUAL>100' analyses/5_snp_calling/snp_calling.vcf | grep -v '#' | wc -l

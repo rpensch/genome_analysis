@@ -207,27 +207,18 @@ It is a lot more important to choose a higher number of threads when blasting ag
 
 ### 7 Mapping
 
-Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it with BWA and sorted with Samtools. The results of the mapping step were used to count the reads (see 8 Read Counting) and do differential expression analysis (see 9 Differential Expression). 
+Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it with BWA and sorted with Samtools. The results of the mapping step were used to count the reads (see 8 Read Counting) and do differential expression analysis (see 9 Differential Expression). Most reads, namely 98.6, map back to the contigs. Reasons why not all the reads map back could be that the assembly is incomplete or flawed. 70.6 % of the reads map to genes, so 16571329 reads do not map to features. When counting the reads with HTSeq (again, see 8 Read Counting), a filter was applied with the -t tag to only count reads that map to protein-coding sequences which would explain the large number of reads that did not map to features. These could for example consist of tRNA, mtRNA or rRNA.
 
 #### Other Questions: 
- - What percentage of your reads map back to your contigs? Why do you think that is? 
- 
-Most reads, namely 98.6, map back to the contigs. Reasons why not all the reads map back could be that the assembly is incomplete or flawed. 
 
  - What potential issues can cause mRNA reads not to map properly to genes in the chromosome? Do you expect this to differ between prokaryotic and eukaryotic projects?
 
-In Eukaryotes, RNA splicing is performed in order to remove intronic regions. This has to be considered when aligning mRNA to the genome and makes mapping more difficult. Another problem to deal with in eukaryotic projects is alternative splicing where some exons are not included in the final mRNA product. 
-
- - What percentage of reads map to genes? 
- 
- 70.6 % of the reads map to genes. 
-
- - How many reads do not map to genes? What does that mean? How does that relate to the type of sequencing data you are mapping?
-
-16571329 reads do not map to any features. 
-annotation
+In Eukaryotes, RNA splicing is performed in order to remove intronic regions. This has to be considered when aligning mRNA to the genome and makes mapping more difficult. Another problem to deal with in eukaryotic projects is alternative splicing where some exons are not included in the final mRNA product.
 
  - What do you interpret from your read coverage differences across the genome?
+
+
+ 
  - Do you see big differences between replicates?
 
 ### 8 Read Counting
