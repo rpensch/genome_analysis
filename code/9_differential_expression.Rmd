@@ -109,11 +109,3 @@ plotPCA(rlog_dds)
 topVarGenes <- head(order(rowVars(assay(rlog_dds)), decreasing=TRUE), 50)
 heatmap.2(assay(rlog_dds)[ topVarGenes,], scale="row",trace="none", dendrogram="column",col = colorRampPalette(rev(brewer.pal(9, "RdBu")))(255))
 ```
-
-```{r}
-topVarGenes
-```
-```{r}
-plotCounts(dds)
-```
-

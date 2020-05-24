@@ -207,7 +207,7 @@ It is a lot more important to choose a higher number of threads when blasting ag
 
 ### 7 Mapping
 
-Read mapping was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it with BWA and sorted with Samtools. The results of the mapping step were used to count the reads (see 8 Read Counting) and do differential expression analysis (see 9 Differential Expression). Most reads, namely 98.6, map back to the contigs. Reasons why not all the reads map back could be that the assembly is incomplete or flawed. 70.6 % of the reads map to genes, so 16571329 reads do not map to features. When counting the reads with HTSeq (again, see 8 Read Counting), a filter was applied with the -t tag to only count reads that map to protein-coding sequences which would explain the large number of reads that did not map to features. These could for example consist of tRNA, mtRNA or rRNA.
+Read mapping of the Illumina paired end RNA reads was performed with BWA and Samtools. First, the assembly was indexed, then the reads were mapped to it with BWA and sorted with Samtools. The results of the mapping step were used to count the reads (see 8 Read Counting) and do differential expression analysis (see 9 Differential Expression). Most reads, namely 98.6, map back to the contigs. Reasons why not all the reads map back could be that the assembly is incomplete or flawed. 70.6 % of the reads map to genes, so 16571329 reads do not map to features. When counting the reads with HTSeq (again, see 8 Read Counting), a filter was applied with the -t tag to only count reads that map to protein-coding sequences which would explain the large number of reads that did not map to features. These could for example consist of tRNA, mtRNA or rRNA. IGV was used to look at read coverage. To do this, index files were created with IGVtools that were then loaded together with the bam files. Read coverage across the genome is medium to low in most regions with a few regions that show very high coverage. Regions with very low to no coverage indicate non-coding regions or very lowly expressed genes, wheras highly expressed genes should have very high coverage. Coverage patterns are very similar across all replicates, also between the different growth conditions. As expected, the region where the differentially expressed pur-genes (see 9 Differential Expression) are located, showed strong differences in coverage between the different conditions. 
 
 #### Other Questions: 
 
@@ -215,19 +215,35 @@ Read mapping was performed with BWA and Samtools. First, the assembly was indexe
 
 In Eukaryotes, RNA splicing is performed in order to remove intronic regions. This has to be considered when aligning mRNA to the genome and makes mapping more difficult. Another problem to deal with in eukaryotic projects is alternative splicing where some exons are not included in the final mRNA product.
 
- - What do you interpret from your read coverage differences across the genome?
-
-
- 
- - Do you see big differences between replicates?
-
 ### 8 Read Counting
 
-Mapped reads were counted with the Python package HTSeq that uses the BAM file generated in the previous step as well as the gff file produced during annotation. The number of reads is mostly distributed between zero and around 2000 with the median being at around 500 reads (see results) which means that most genes are expressed. A gene counts as expressed when one or more reads map to it. 
+Mapped reads were counted with the Python package HTSeq that uses the BAM file generated in the previous step as well as the gff file produced during annotation. The histogram visualizing the distribution of counts per gene shows that the read count for most genes is actually zero which means that most genes are not expressed. In theory, a gene is expressed if the read count is > 0, so if at least one transcript is present. In order to do proper statistical analysis, this does not provide a lot of information though and it is more informative to investigate if expression is significantely different between the two conditions. In order to account for the fact that the counts for most genes are zero, the counts are normalized. The histogram of the normalized counts shows something like a normal distribution. 
+
 
 ### 9 Differential Expression
 
-Differential expression analysis of the RNA sequence data retrieved from cultures grown in BH and serum was performed with the R package DESeq and revealed a differentially expressed gene cluster involved in purine biosynthesis just as the results of the paper show as well. In general, the different samples and different conditions do cluster together as shown in the heat map. The PCA performed on the rlog-transformed data indicates that 99 % of the variance can be explained by the the different growth mediums.
+Differential expression analysis of the RNA sequence data retrieved from cultures grown in BH and serum was performed with the R package DESeq2. After creating the DESeqDataSet object from the read counts and running the pipeline the results were inspected. Bevor inspecting the results further, insignificant results were filtered out. Usually, results are understood as significant if the p-value is below a predefined threshold (often 0.05 or 0.01). In the case of differential expression analysis, there are thousands of genes involved and accepting a p-value of for example 0.05 as significant would mean a great risk of false positives. To avoid and minimize that risk, DESeq2 calculates an adjusted p-value that is corrected with the Benjamini–Hochberg procedure. This value is then used to filter significant results. Analyzing these results and looking at the genes with the strongest up- or downregulation revealed a differentially expressed gene cluster involved in purine biosynthesis just as the results of the paper show as well.
+
+In general, the different samples and different conditions do cluster together as shown in the heat map. The PCA performed on the rlog-transformed data indicates that 99 % of the variance can be explained by the the different growth mediums.
+
+#### Other Questions:
+
+ - How do the different samples and replicates cluster together?
+
+The PCA performed on the rlog-transformed data shows that the samples cluster together according to the different growth conditions that were applied and 99 % of the variance is actually explained by these different conditions.
+
+ - What is the q-value and how does it differ from the p-value? Which one should you use to determine if the result is statistically significant?
+
+ The q-value is a measure of significance analogous to the p-value. They do, however, differ in the sense that the p-value is a measure of significance in terms of the false positive rate whereas the q-value is in terms of the false discovery rate. The difference here is that the false positive rate is rate that features that are really not significant are called significant while the false discovery rate is the rate that features that are called significant are actually not. So, the q-value is a measure that focuses on the features that are called significant, it takes the multiple testing problem into account and limits false positives but tries to minimize the number of false negatives at the same time which makes it a more suitable measure than the p-value for differential expression analysis. 
+
+ - Do you need a normalization step? What would you normalize against? Does DESeq do it?
+
+In general, it is necessary to perform a normalization step in order to make accurate comparisons of gene expression. However, DESeq2 needs raw counts as input data and it is therefore not recommended to do any sort of normalization beforehand. DESeq2 does its own internal normalization steps accounting for sequencing depth and RNA composition with the median of ratios method.
+
+ - What would you do to increase the statistical power of your expression analysis?
+
+Independent filtering is a way of increasing statistical power by removing weakly expressed genes from the analysis which then improves the multiple testing adjustments that are made. This means, more genes will be found to be significant. 
+
 
 ## Extra Analyses
 
@@ -275,3 +291,5 @@ Fastq quality indicates how well supported a sequenced base is, mapping quality 
  - Liu, D., Hunt, M., & Tsai, I. J. (2018). Inferring synteny between genome assemblies: A systematic evaluation. BMC Bioinformatics, 19(1), 26-13. doi:10.1186/s12859-018-2026-4
  - McGann, P., Bunin, J. L., Snesrud, E., Singh, S., Maybank, R., Ong, A. C., . . . Lesho, E. (2015;2016;). Real time application of whole genome sequencing for outbreak investigation – what is an achievable turnaround time? Diagnostic Microbiology & Infectious Disease, 85(3), 277-282. doi:10.1016/j.diagmicrobio.2016.04.020 
  - Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., . . . 1000 Genome Project Data Processing Subgroup. (2009). The sequence alignment map format and SAMtools. England: Oxford University Press. doi:10.1093/bioinformatics/btp352
+ - Storey, J. D. (2003). The positive false discovery rate: A bayesian interpretation and the q-value. The Annals of Statistics, 31(6), 2013-2035. doi:10.1214/aos/1074290335
+ - Storey, J. D., & Tibshirani, R. (2003). Statistical significance for genomewide studies. Proceedings of the National Academy of Sciences of the United States of America, 100(16), 9440-9445. doi:10.1073/pnas.1530509100
