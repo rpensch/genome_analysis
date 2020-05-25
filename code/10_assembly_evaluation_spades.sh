@@ -5,8 +5,11 @@ mv analyses/2_genome_assembly/2_efaecium_spades/contigs.fasta \
 analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta #rename spades assembly file
 
 nucmer --mum -p 1_assembly_nucmer analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta
-
 mummerplot -p 1_assembly_mummerplot --png 1_assembly_nucmer.delta
+
+nucmer --mum -p 1_spades_reference data/reference/GCF_001720945.1_ASM172094v1_genomic.fna analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta
+mummerplot -p 1_spades_mummerplot_reference -l -R data/reference/GCF_001720945.1_ASM172094v1_genomic.fna -Q analyses/2_genome_assembly/2_efaecium_spades/efaecium_spades.contigs.fasta --png 1_spades_reference.delta 
+
 
 #!/bin/bash -l   
 #SBATCH -A g2020008 

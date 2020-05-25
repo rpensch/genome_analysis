@@ -38,15 +38,3 @@ data/transcriptomics_data/RNA-Seq_Serum/trim_paired_ERR1797970_pass_2.fastq.gz |
 bwa mem analyses/2_genome_assembly/1_efaecium_canu/efaecium_canu.contigs.fasta \
 data/transcriptomics_data/RNA-Seq_Serum/trim_paired_ERR1797971_pass_1.fastq.gz \
 data/transcriptomics_data/RNA-Seq_Serum/trim_paired_ERR1797971_pass_2.fastq.gz | samtools view -b | samtools sort -o analyses/6_rna_mapping/rna_mapping_Serum_paired_ERR1797971.bam
-
-
-
-module load bioinfo-tools IGVtools
-
-igvtools index rna_mapping_BH_paired_ERR1797972.bam
-igvtools index rna_mapping_BH_paired_ERR1797973.bam
-igvtools index rna_mapping_BH_paired_ERR1797974.bam
-
-igvtools index rna_mapping_Serum_paired_ERR1797969.bam
-igvtools index rna_mapping_Serum_paired_ERR1797970.bam
-igvtools index rna_mapping_Serum_paired_ERR1797971.bam

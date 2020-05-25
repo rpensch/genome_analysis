@@ -63,7 +63,8 @@ dds <- DESeq(dataset)
 ```{r}
 result <- results(dds, contrast=c('condition','Serum','BH'))
 significant_result <- result[ which(result$padj < 0.1 ), ]
-summary(result)
+sum(result$padj > 0.1, na.rm=TRUE)
+summary(significant_result)
 ```
 
 Significant genes with the strongest downregulation:
