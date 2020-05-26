@@ -80,7 +80,7 @@ x
 Significant genes with the strongest upregulation:
 
 ```{r}
-y <- tail(significant_result[order(significant_result$log2FoldChange),], n = 20)
+y <- tail(significant_result[order(significant_result$log2FoldChange),], n = 50)
 
 write.table(y, "diff_expr_genes_up.txt", sep = " ", dec = ".",
             row.names = TRUE, col.names = TRUE)
